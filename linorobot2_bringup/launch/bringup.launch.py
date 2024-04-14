@@ -65,7 +65,7 @@ def generate_launch_description():
 
         DeclareLaunchArgument(
             name='base_serial_port', 
-            default_value='/dev/ttyACM0',
+            default_value='/dev/tnc1',
             description='Linorobot Base Serial Port'
         ),
 
