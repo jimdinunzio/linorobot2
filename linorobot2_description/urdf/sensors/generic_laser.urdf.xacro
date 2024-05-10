@@ -9,7 +9,7 @@
       min_angle="-3.1416"
       max_angle="3.1416"
       min_range="0.08"
-      max_range="12.0"
+      max_range="17.0"
       frame_id="laser"
       topic_name="scan"
     >

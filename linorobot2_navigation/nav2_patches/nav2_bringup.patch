@@ -1,0 +1,81 @@
+Only in /opt/ros/humble/share/nav2_bringup: cmake
+Only in /opt/ros/humble/share/nav2_bringup: environment
+Only in /opt/ros/humble/share/nav2_bringup/launch: bringup_launch.py
+Only in /opt/ros/humble/share/nav2_bringup/launch: cloned_multi_tb3_simulation_launch.py
+diff -aur nav2_patches/nav2_bringup/launch/localization_launch.py /opt/ros/humble/share/nav2_bringup/launch/localization_launch.py
+--- nav2_patches/nav2_bringup/launch/localization_launch.py	2024-04-30 23:13:39.155531848 -0700
++++ /opt/ros/humble/share/nav2_bringup/launch/localization_launch.py	2024-04-30 23:16:52.281836173 -0700
+@@ -41,9 +41,8 @@
+     use_respawn = LaunchConfiguration('use_respawn')
+     log_level = LaunchConfiguration('log_level')
+ 
+-    #lifecycle_nodes = ['map_server', 'amcl']
+-    lifecycle_nodes = ['map_server']
+-
++    lifecycle_nodes = ['map_server', 'amcl']
++    
+     # Map fully qualified names to relative ones so the node's namespace can be prepended.
+     # In case of the transforms (tf), currently, there doesn't seem to be a better alternative
+     # https://github.com/ros/geometry2/issues/32
+@@ -121,16 +120,16 @@
+                 parameters=[configured_params],
+                 arguments=['--ros-args', '--log-level', log_level],
+                 remappings=remappings),
+-            # Node(
+-            #     package='nav2_amcl',
+-            #     executable='amcl',
+-            #     name='amcl',
+-            #     output='screen',
+-            #     respawn=use_respawn,
+-            #     respawn_delay=2.0,
+-            #     parameters=[configured_params],
+-            #     arguments=['--ros-args', '--log-level', log_level],
+-            #     remappings=remappings),
++            Node(
++                package='nav2_amcl',
++                executable='amcl',
++                name='amcl',
++                output='screen',
++                respawn=use_respawn,
++                respawn_delay=2.0,
++                parameters=[configured_params],
++                arguments=['--ros-args', '--log-level', log_level],
++                remappings=remappings),
+             Node(
+                 package='nav2_lifecycle_manager',
+                 executable='lifecycle_manager',
+@@ -153,12 +152,12 @@
+                 name='map_server',
+                 parameters=[configured_params],
+                 remappings=remappings),
+-            # ComposableNode(
+-            #     package='nav2_amcl',
+-            #     plugin='nav2_amcl::AmclNode',
+-            #     name='amcl',
+-            #     parameters=[configured_params],
+-            #     remappings=remappings),
++            ComposableNode(
++                package='nav2_amcl',
++                plugin='nav2_amcl::AmclNode',
++                name='amcl',
++                parameters=[configured_params],
++                remappings=remappings),
+             ComposableNode(
+                 package='nav2_lifecycle_manager',
+                 plugin='nav2_lifecycle_manager::LifecycleManager',
+Only in /opt/ros/humble/share/nav2_bringup/launch: navigation_launch.py
+Only in /opt/ros/humble/share/nav2_bringup/launch: rviz_launch.py
+Only in /opt/ros/humble/share/nav2_bringup/launch: slam_launch.py
+Only in /opt/ros/humble/share/nav2_bringup/launch: tb3_simulation_launch.py
+Only in /opt/ros/humble/share/nav2_bringup/launch: unique_multi_tb3_simulation_launch.py
+Only in /opt/ros/humble/share/nav2_bringup: local_setup.bash
+Only in /opt/ros/humble/share/nav2_bringup: local_setup.dsv
+Only in /opt/ros/humble/share/nav2_bringup: local_setup.sh
+Only in /opt/ros/humble/share/nav2_bringup: local_setup.zsh
+Only in /opt/ros/humble/share/nav2_bringup: maps
+Only in /opt/ros/humble/share/nav2_bringup: package.dsv
+Only in /opt/ros/humble/share/nav2_bringup: package.xml
+Only in /opt/ros/humble/share/nav2_bringup: params
+Only in /opt/ros/humble/share/nav2_bringup: rviz
+Only in /opt/ros/humble/share/nav2_bringup: urdf
+Only in /opt/ros/humble/share/nav2_bringup: worlds

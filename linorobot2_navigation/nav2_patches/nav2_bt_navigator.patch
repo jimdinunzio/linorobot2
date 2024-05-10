@@ -1,0 +1,75 @@
+Only in /opt/ros/humble/share/nav2_bt_navigator/behavior_trees: follow_point.xml
+diff -aur nav2_patches/nav2_bt_navigator/behavior_trees/navigate_through_poses_w_replanning_and_recovery.xml /opt/ros/humble/share/nav2_bt_navigator/behavior_trees/navigate_through_poses_w_replanning_and_recovery.xml
+--- nav2_patches/nav2_bt_navigator/behavior_trees/navigate_through_poses_w_replanning_and_recovery.xml	2024-04-30 23:20:37.883553549 -0700
++++ /opt/ros/humble/share/nav2_bt_navigator/behavior_trees/navigate_through_poses_w_replanning_and_recovery.xml	2024-04-30 23:58:56.601357098 -0700
+@@ -28,7 +28,7 @@
+             <ClearEntireCostmap name="ClearLocalCostmap-Subtree" service_name="local_costmap/clear_entirely_local_costmap"/>
+             <ClearEntireCostmap name="ClearGlobalCostmap-Subtree" service_name="global_costmap/clear_entirely_global_costmap"/>
+           </Sequence>
+-          <!--<Spin spin_dist="1.57"/>-->
++          <Spin spin_dist="1.57"/>
+           <Wait wait_duration="5"/>
+           <BackUp backup_dist="0.30" backup_speed="0.05"/>
+         </RoundRobin>
+diff -aur nav2_patches/nav2_bt_navigator/behavior_trees/navigate_to_pose_w_replanning_and_recovery.xml /opt/ros/humble/share/nav2_bt_navigator/behavior_trees/navigate_to_pose_w_replanning_and_recovery.xml
+--- nav2_patches/nav2_bt_navigator/behavior_trees/navigate_to_pose_w_replanning_and_recovery.xml	2024-04-30 23:20:37.883553549 -0700
++++ /opt/ros/humble/share/nav2_bt_navigator/behavior_trees/navigate_to_pose_w_replanning_and_recovery.xml	2024-04-30 23:58:56.601357098 -0700
+@@ -26,7 +26,7 @@
+             <ClearEntireCostmap name="ClearLocalCostmap-Subtree" service_name="local_costmap/clear_entirely_local_costmap"/>
+             <ClearEntireCostmap name="ClearGlobalCostmap-Subtree" service_name="global_costmap/clear_entirely_global_costmap"/>
+           </Sequence>
+-          <!--<Spin spin_dist="1.57"/>-->
++          <Spin spin_dist="1.57"/>
+           <Wait wait_duration="5"/>
+           <BackUp backup_dist="0.30" backup_speed="0.05"/>
+         </RoundRobin>
+diff -aur nav2_patches/nav2_bt_navigator/behavior_trees/navigate_to_pose_w_replanning_goal_patience_and_recovery.xml /opt/ros/humble/share/nav2_bt_navigator/behavior_trees/navigate_to_pose_w_replanning_goal_patience_and_recovery.xml
+--- nav2_patches/nav2_bt_navigator/behavior_trees/navigate_to_pose_w_replanning_goal_patience_and_recovery.xml	2024-04-30 23:20:37.883553549 -0700
++++ /opt/ros/humble/share/nav2_bt_navigator/behavior_trees/navigate_to_pose_w_replanning_goal_patience_and_recovery.xml	2024-04-30 23:58:56.601357098 -0700
+@@ -37,7 +37,7 @@
+             <ClearEntireCostmap name="ClearLocalCostmap-Subtree" service_name="local_costmap/clear_entirely_local_costmap"/>
+             <ClearEntireCostmap name="ClearGlobalCostmap-Subtree" service_name="global_costmap/clear_entirely_global_costmap"/>
+           </Sequence>
+-          <!--<Spin spin_dist="1.57"/>-->
++          <Spin spin_dist="1.57"/>
+           <Wait wait_duration="5"/>
+           <BackUp backup_dist="0.30" backup_speed="0.05"/>
+         </RoundRobin>
+diff -aur nav2_patches/nav2_bt_navigator/behavior_trees/navigate_w_recovery_and_replanning_only_if_path_becomes_invalid.xml /opt/ros/humble/share/nav2_bt_navigator/behavior_trees/navigate_w_recovery_and_replanning_only_if_path_becomes_invalid.xml
+--- nav2_patches/nav2_bt_navigator/behavior_trees/navigate_w_recovery_and_replanning_only_if_path_becomes_invalid.xml	2024-04-30 23:56:56.510799655 -0700
++++ /opt/ros/humble/share/nav2_bt_navigator/behavior_trees/navigate_w_recovery_and_replanning_only_if_path_becomes_invalid.xml	2024-04-04 15:28:43.000000000 -0700
+@@ -34,7 +34,7 @@
+             <ClearEntireCostmap name="ClearLocalCostmap-Subtree" service_name="local_costmap/clear_entirely_local_costmap"/>
+             <ClearEntireCostmap name="ClearGlobalCostmap-Subtree" service_name="global_costmap/clear_entirely_global_costmap"/>
+           </Sequence>
+-          <!-- <Spin name="SpinRecovery" spin_dist="1.57"/> -->
++          <Spin name="SpinRecovery" spin_dist="1.57"/>
+           <Wait name="WaitRecovery" wait_duration="5"/>
+           <BackUp name="BackUpRecovery" backup_dist="0.30" backup_speed="0.05"/>
+         </RoundRobin>
+Only in /opt/ros/humble/share/nav2_bt_navigator/behavior_trees: navigate_w_replanning_distance.xml
+Only in /opt/ros/humble/share/nav2_bt_navigator/behavior_trees: navigate_w_replanning_only_if_goal_is_updated.xml
+Only in /opt/ros/humble/share/nav2_bt_navigator/behavior_trees: navigate_w_replanning_only_if_path_becomes_invalid.xml
+Only in /opt/ros/humble/share/nav2_bt_navigator/behavior_trees: navigate_w_replanning_speed.xml
+Only in /opt/ros/humble/share/nav2_bt_navigator/behavior_trees: navigate_w_replanning_time.xml
+diff -aur nav2_patches/nav2_bt_navigator/behavior_trees/nav_to_pose_with_consistent_replanning_and_if_path_becomes_invalid.xml /opt/ros/humble/share/nav2_bt_navigator/behavior_trees/nav_to_pose_with_consistent_replanning_and_if_path_becomes_invalid.xml
+--- nav2_patches/nav2_bt_navigator/behavior_trees/nav_to_pose_with_consistent_replanning_and_if_path_becomes_invalid.xml	2024-04-30 23:53:00.245700728 -0700
++++ /opt/ros/humble/share/nav2_bt_navigator/behavior_trees/nav_to_pose_with_consistent_replanning_and_if_path_becomes_invalid.xml	2024-04-30 23:58:56.605357050 -0700
+@@ -36,7 +36,7 @@
+             <ClearEntireCostmap name="ClearLocalCostmap-Subtree" service_name="local_costmap/clear_entirely_local_costmap"/>
+             <ClearEntireCostmap name="ClearGlobalCostmap-Subtree" service_name="global_costmap/clear_entirely_global_costmap"/>
+           </Sequence>
+-          <!--<Spin spin_dist="1.57"/>-->
++          <Spin spin_dist="1.57"/>
+           <Wait wait_duration="5"/>
+           <BackUp backup_dist="0.30" backup_speed="0.05"/>
+         </RoundRobin>
+Only in /opt/ros/humble/share/nav2_bt_navigator/behavior_trees: odometry_calibration.xml
+Only in /opt/ros/humble/share/nav2_bt_navigator: cmake
+Only in /opt/ros/humble/share/nav2_bt_navigator: environment
+Only in /opt/ros/humble/share/nav2_bt_navigator: local_setup.bash
+Only in /opt/ros/humble/share/nav2_bt_navigator: local_setup.dsv
+Only in /opt/ros/humble/share/nav2_bt_navigator: local_setup.sh
+Only in /opt/ros/humble/share/nav2_bt_navigator: local_setup.zsh
+Only in /opt/ros/humble/share/nav2_bt_navigator: package.dsv
+Only in /opt/ros/humble/share/nav2_bt_navigator: package.xml
