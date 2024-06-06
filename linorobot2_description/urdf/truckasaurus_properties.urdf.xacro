@@ -25,6 +25,10 @@
   <xacro:property name="depth_sensor_pose">
     <origin xyz="0.191 0 0.110" rpy="0 0 0"/>
   </xacro:property>
+  
+  <xacro:property name="gps_sensor_pose">
+      <origin xyz="-0.235 0.0 0.055" rpy="0 0 0"/>
+  </xacro:property>
 
   <!-- OakD as depth sensor -->
   <xacro:property name="depth_camera_name" value="oak" />
