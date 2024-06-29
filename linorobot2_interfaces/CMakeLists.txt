@@ -34,7 +34,7 @@ ament_package()
 
 # Add Python script target
 install(PROGRAMS
-  scripts/calibrate.py
+  scripts/calibrate_mag.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

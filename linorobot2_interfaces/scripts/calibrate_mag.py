@@ -27,15 +27,23 @@ def main(args=None):
     mag_scale = None
 
     # Declare parameters
+    node.declare_parameter('init', False) # if true then run calibration and write new values to calib_file
     node.declare_parameter('mag_bias', '0.0,0.0,0.0')
     node.declare_parameter('mag_scale', '0.0,0.0,0.0')
     node.declare_parameter('calib_file', '')
     
-    # Load parameters from YAML file
-    if node.get_parameter('calib_file').get_parameter_value().string_value != '':
-        mag_bias, mag_scale = load_params_from_yaml(node.get_parameter('calib_file').get_parameter_value().string_value)
-        node.get_logger().info(f"calib_file: {node.get_parameter('calib_file').get_parameter_value().string_value}")
+    calib_file = node.get_parameter('calib_file').get_parameter_value().string_value
+    has_calib_file = calib_file != ''
+    run_calibration = node.get_parameter('init').get_parameter_value().bool_value
 
+    # Load parameters from YAML file
+    if not run_calibration:
+        if has_calib_file:
+            mag_bias, mag_scale = load_params_from_yaml(node.get_parameter('calib_file').get_parameter_value().string_value)
+            node.get_logger().info(f"calib_file: {node.get_parameter('calib_file').get_parameter_value().string_value}")
+    else:
+        node.get_logger().info("Running calibration...")
+    
     client = node.create_client(CalibrateMag, "/calibrate_mag")
     request = CalibrateMag.Request()
 
@@ -59,6 +67,10 @@ def main(args=None):
             mag_bias = response.mag_bias
             node.get_logger().info(f"Mag Bias: {mag_bias}")
             node.get_logger().info(f"Mag Scale: {mag_scale}")
+            if run_calibration and has_calib_file:
+                with open(calib_file, 'w') as file:
+                    yaml.dump({'mag_bias': [mag_bias.x, mag_bias.y, mag_bias.z], 'mag_scale': [mag_scale.x, mag_scale.y, mag_scale.z]}, file)
+                    node.get_logger().info(f"Calibration data written to {calib_file}")
             # Shutdown the node after receiving the response
             node.destroy_node()
             rclpy.shutdown()
@@ -66,6 +78,8 @@ def main(args=None):
             node.get_logger().error(f"Service call failed: {e}")
 
     send_request()
+    if run_calibration:
+        node.get_logger().info("Start rotating the robot in all directions to calibrate the magnetometer and continue for 20 seconds.")
     rclpy.spin(node)
 
 if __name__ == "__main__":
