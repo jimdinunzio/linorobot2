@@ -5,7 +5,7 @@
     <joint name="imu_to_base_link" type="fixed">
       <parent link="base_link"/>
       <child link="imu_link"/>
-      <origin xyz="0.085 -0.07 0.0" rpy="0 0 0"/>
+      <origin xyz="-0.191 -0.075 0.016" rpy="0 0 0"/>
     </joint>
 
     <gazebo reference="imu_link">
@@ -25,7 +25,7 @@
           <gaussianNoise>0.0</gaussianNoise>
           <xyzOffset>0 0 0</xyzOffset>
           <rpyOffset>0 0 0</rpyOffset>
-          <frameName>imu_link</frameName>
+          <frameName>imu_link_ned</frameName>
           <initialOrientationAsReference>false</initialOrientationAsReference>
       </plugin>
       <pose>0 0 0 0 0 0</pose>

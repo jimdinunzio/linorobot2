@@ -1,0 +1,18 @@
+madgwick_filter_node:
+  ros__parameters:
+    stateless: false
+    use_mag: true
+    publish_tf: true
+    reverse_tf: false
+    fixed_frame: "odom"
+    constant_dt: 0.0
+    publish_debug_topics: true
+    world_frame: "enu"
+    gain: 1.0
+    zeta: 0.0
+    mag_bias_x: 0.0
+    mag_bias_y: 0.0
+    mag_bias_z: 0.0
+    # Computed from 1000 samples of /imu/data orientation output
+    orientation_stddev: 0.061102413078067165
+  

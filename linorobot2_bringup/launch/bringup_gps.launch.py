@@ -19,7 +19,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 from launch.conditions import IfCondition, UnlessCondition
-
+import os
 
 def generate_launch_description():
     sensors_launch_path = PathJoinSubstitution(
@@ -36,6 +36,10 @@ def generate_launch_description():
 
     ekf_config_path = PathJoinSubstitution(
         [FindPackageShare("linorobot2_base"), "config", "ekf_gps.yaml"]
+    )
+
+    madgwick_config_path = PathJoinSubstitution(
+        [FindPackageShare("linorobot2_base"), "config", "imu_filter.yaml"]
     )
 
     default_robot_launch_path = PathJoinSubstitution(
@@ -101,8 +105,14 @@ def generate_launch_description():
 
         DeclareLaunchArgument(
             name='orientation_stddev',
-            default_value='0.08716',
+            default_value='0.003162278',
             description='Madgwick orientation stddev'
+        ),
+
+        DeclareLaunchArgument(
+            name='madgwick_gain', 
+            default_value='1.0',
+            description='Madgwick filter gain'
         ),
 
         DeclareLaunchArgument(
@@ -118,7 +128,7 @@ def generate_launch_description():
             name='madgwick_filter_node',
             output='screen',
             parameters=[
-                {'orientation_stddev' : LaunchConfiguration('orientation_stddev')}
+                 madgwick_config_path
             ]
         ),
         
@@ -148,7 +158,7 @@ def generate_launch_description():
             package='robot_localization', 
             executable='navsat_transform_node', 
             name='navsat_transform',
-	        output='screen',
+            output='screen',
             parameters=[
                 ekf_config_path
             ],
