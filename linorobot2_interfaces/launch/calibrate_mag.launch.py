@@ -22,10 +22,17 @@ def generate_launch_description():
         description='Path to the YAML file containing magnetometer calibration data.'
     )
 
+    declare_mag_init_arg = DeclareLaunchArgument(
+        'init',
+        default_value='False',
+        description='If true, run calibration and write new values to calib_file.'
+    )
+
     calibrate_node = Node(
         package='linorobot2_interfaces',
         executable='calibrate_mag.py',
         parameters=[
+            {'init': LaunchConfiguration('init')},
             {'mag_bias': LaunchConfiguration('mag_bias')},
             {'mag_scale': LaunchConfiguration('mag_scale')},
             {'calib_file': LaunchConfiguration('calib_file')}
@@ -33,6 +40,7 @@ def generate_launch_description():
     )
 
     return LaunchDescription([
+        declare_mag_init_arg,
         declare_mag_bias_arg,
         declare_mag_scale_arg,
         declare_mag_calib_file_arg,
