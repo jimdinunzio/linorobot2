@@ -67,6 +67,10 @@ def main(args=None):
             mag_bias = response.mag_bias
             node.get_logger().info(f"Mag Bias: {mag_bias}")
             node.get_logger().info(f"Mag Scale: {mag_scale}")
+
+            node.get_logger().info(f"float DEFAULT_MAG_BIAS[] = {{{mag_bias.x}, {mag_bias.y}, {mag_bias.z}}};")
+            node.get_logger().info(f"float DEFAULT_MAG_SCALE[] = {{{mag_scale.x}, {mag_scale.y}, {mag_scale.z}}};")
+
             if run_calibration and has_calib_file:
                 with open(calib_file, 'w') as file:
                     yaml.dump({'mag_bias': [mag_bias.x, mag_bias.y, mag_bias.z], 'mag_scale': [mag_scale.x, mag_scale.y, mag_scale.z]}, file)
