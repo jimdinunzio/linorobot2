@@ -86,9 +86,9 @@ ekf_filter_node:
 # do not provide some of the state variables estimated by the filter. For example, a TwistWithCovarianceStamped message
 # has no pose information, so the first six values would be meaningless in that case. Each vector defaults to all false
 # if unspecified, effectively making this parameter required for each sensor.
-        odom0_config: [true, true, false,
+        odom0_config: [false, false, false,
                        false, false, false,
-                       true, true, false,
+                       true, true, true,
                        false, false, true,
                        false, false, false]    
 
@@ -134,9 +134,9 @@ ekf_filter_node:
 
         imu0: imu/data
         imu0_config: [false, false, false,
-                true, true, true, 
+                false, false, true, 
                 false, false, false,
-                true, true, true, 
+                false, false, false, 
                 false, false, false]
         #        [x_pos   , y_pos    , z_pos,
         #         roll    , pitch    , yaw,
@@ -258,16 +258,20 @@ ekf_filter_node_map:
     #roll  , pitch , yaw,
     #vx    , vy    , vz,
     #vroll , vpitch, vyaw,
-    #ax    , ay    , az    
-    odom0: odom/unfiltered
-    odom0_config: [true, true, false,
+    #ax    , ay    , az   
+
+    # Since per REP 105 the position of the robot in the odom frame has to be continuous over time, 
+    # in this filter we just want to fuse the robot’s speed measured by its wheels published /odom, 
+    # and the imu heading published on /imu: 
+    odom0: odom
+    odom0_config: [false, false, false,
                    false, false, false,
-                   true, true, false,
+                   true, true, true,
                    false, false, true,
                    false, false, false]
 #     odom0_queue_size: 10
 #     odom0_nodelay: false
-    odom0_differential: true
+#     odom0_differential: false
 #     odom0_relative: false     
                 
 
@@ -284,9 +288,9 @@ ekf_filter_node_map:
 
     imu0: imu/data
     imu0_config: [false, false, false,
-                true, true, true, 
+                false, false, true, 
                 false, false, false,
-                true, true, true, 
+                false, false, false,
                 false, false, false]
 
 #     imu0_nodelay: false
