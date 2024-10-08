@@ -14,12 +14,13 @@
 
 import os
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription, GroupAction
-from launch.substitutions import PathJoinSubstitution, PythonExpression
+from launch.actions import IncludeLaunchDescription, GroupAction, DeclareLaunchArgument
+from launch.substitutions import PathJoinSubstitution, PythonExpression, LaunchConfiguration
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.substitutions import FindPackageShare
 from launch.conditions import IfCondition
 from launch_ros.actions import Node, SetRemap
+from ament_index_python.packages import get_package_prefix, get_package_share_directory
 
 
 def generate_launch_description():
@@ -67,6 +68,29 @@ def generate_launch_description():
         [FindPackageShare('linorobot2_bringup'), 'launch', 'depth.launch.py']
     )
 
+    gps_param = LaunchConfiguration('gps')
+
+    declare_print_arg = DeclareLaunchArgument(
+        'print',
+        default_value='false',
+        description='Enable printing'
+    )
+    print_param = LaunchConfiguration('print')
+
+    declare_calib_data_file_arg = DeclareLaunchArgument(
+        'calib_data_file',
+        default_value=os.path.join(get_package_prefix('mpu9250'), 'config', 'calib_data.json'),
+        description='Path to the calibration data file'
+    )
+    calib_data_file_param = LaunchConfiguration('calib_data_file')
+
+    declare_calibrate_arg = DeclareLaunchArgument(
+        'calibrate',
+        default_value='false',
+        description='Do Gyro and Magnetometer calibration'
+    )
+    calibrate_param = LaunchConfiguration('calibrate')
+
     return LaunchDescription([
         GroupAction(
             actions=[
@@ -92,7 +116,35 @@ def generate_launch_description():
             remappings=[('depth', depth_topics[depth_sensor_name][0]),
                         ('depth_camera_info', depth_topics[depth_sensor_name][1])],
             parameters=[fake_laser_config_path]
-        ) 
+        ),
+
+        declare_print_arg,
+        declare_calibrate_arg,
+        declare_calib_data_file_arg,
+        Node(
+            package="mpu9250",
+            executable="mpu9250",
+            name="mpu9250",
+            parameters=[
+                {"acceleration_scale": [1.0070642813137283, 1.0077919346121842, 0.979079278290781], 
+                 "acceleration_bias": [0.30351858720785296, 0.03640315588498285, 0.014441728200428484],
+                 "print": print_param,
+                 "calibrate": calibrate_param,
+                 "calib_data_file": calib_data_file_param,
+                 "do_apply_ema": True,
+                 "ema_alpha": 0.1}
+            ],
+        ),
+
+        Node(
+            condition=IfCondition(gps_param),
+            package='nmea_navsat_driver',
+            executable='nmea_serial_driver',
+            output='screen',
+            parameters=[
+                os.path.join(get_package_share_directory('nmea_navsat_driver'), 'config', 'nmea_serial_driver.yaml')
+            ]
+        )
     ])
 
    
